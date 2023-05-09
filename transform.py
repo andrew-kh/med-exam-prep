@@ -16,8 +16,11 @@ df = df.melt(
     id_vars=['topic_id', 'question_type', 'question_text'],
     value_vars=answer_cols,
     value_name='answer_text',
-    var_name='answer_id'
+    var_name='answer_id',
+    ignore_index=False
 )
+
+df.index.name='question_id'
 
 df = df[df['answer_text'].isnull()==False]
 
@@ -33,7 +36,6 @@ df = df.drop(columns=['question_type'])
 df['is_correct_answer'] = df['answer_text'].str.count('\*')
 
 # check 1: unique answers are {0;1}
-# and * only indicates correct answers
 # output in console
 check_ans = list(df.is_correct_answer.unique())
 if len(check_ans)!=2 or sum(check_ans)!=1:
@@ -43,4 +45,4 @@ if len(check_ans)!=2 or sum(check_ans)!=1:
 # from answer text
 df['answer_text'] = df['answer_text'].str.replace('\*', '', regex=True).str.strip()
 
-df.to_csv('./data/exam_questions_w_answers.txt', sep='\t', index=False)
+df.to_csv('./data/exam_questions_w_answers.txt', sep='\t', index=True)
