@@ -16,7 +16,7 @@ conn = psycopg2.connect(
 bot = telebot.TeleBot(env["TG_BOT_TOKEN"])
 
 @bot.message_handler(commands=['start'])
-def send_welcome(message, conn):
+def send_welcome(message):
 	
 	bot.reply_to(message,
 	    """
