@@ -54,7 +54,7 @@ def send_welcome(message):
 def echo_all(message):
 	
 	cur = conn.cursor()
-	cur.execute(f'SELECT question_id FROM med.user_questions WHEE user_id = {message.chat.id}')
+	cur.execute(f'SELECT question_id FROM med.user_questions WHERE user_id = {message.chat.id}')
 	current_question_id = int(cur.fetchone()[0])
 
 	cur.execute(f'SELECT answer_id FROM med.questions_raw WHERE question_id = {current_question_id} and is_correct_answer=1')
@@ -66,7 +66,7 @@ def echo_all(message):
 	if user_answer == correct_answers:
 		bot.send_message(message.chat.id, 'Верно 😸')
 		cur = conn.cursor()
-		cur.execute(f'DELETE FROM med.user_questions WHER user_id = {message.chat.id}')
+		cur.execute(f'DELETE FROM med.user_questions WHERE user_id = {message.chat.id}')
 		conn.commit()
 		cur.close()
 	else:
