@@ -43,4 +43,4 @@ if len(check_ans)!=2 or sum(check_ans)!=1:
 # from answer text
 df['answer_text'] = df['answer_text'].str.replace('\*', '', regex=True).str.strip()
 
-df.to_csv('./data/exam_questions_w_answers.txt', sep='\t')
+df.to_csv('./data/exam_questions_w_answers.txt', sep='\t', index=False)
