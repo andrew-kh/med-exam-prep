@@ -28,18 +28,27 @@ def send_welcome(message):
 	
 	time.sleep(1)
 
-	cur = conn.cursor()
-	cur.execute(f'INSERT INTO med.user_questions (user_id, question_id) VALUES ({message.chat.id}, NULL)')
-	conn.commit()
-	cur.close()
-
 	rand_q_id = random.randint(0, 1583)
 
 	cur = conn.cursor()
 	cur.execute(f'SELECT DISTINCT question_text FROM med.questions_raw WHERE question_id = {rand_q_id}')
 	question_text = cur.fetchone()[0]
 
+	cur.execute(f'SELECT answer_text FROM med.questions_raw WHERE question_id = {rand_q_id}')	
+	answer_text = cur.fetchall()
+	answer_text = [i[0] for i in answer_text]
+	answers_id = list(range(1,len(answer_text)+1))
+	pos_answers = [f'{a_num} - {a_text}' for a_num, a_text in zip(answers_id, answer_text)]
+	pos_answers = '\n'.join(pos_answers)
+
+	cur = conn.cursor()
+	cur.execute(f'INSERT INTO med.user_questions (user_id, question_id) VALUES ({message.chat.id}, {rand_q_id})')
+	conn.commit()
+	cur.close()
+
 	bot.send_message(message.chat.id, f'Вопрос: {question_text}')
+	bot.send_message(message.chat.id, f'Варианты ответа:\n{pos_answers}')
+
 	
 @bot.message_handler(func=lambda message: True)
 def echo_all(message):
