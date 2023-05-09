@@ -1,6 +1,7 @@
 import telebot
 import time
 import random
+from sqlalchemy import create_engine
 from get_env import get_env_data_as_dict
 
 env = get_env_data_as_dict('/usr/med_exam_prep/.env')
@@ -19,7 +20,7 @@ def send_welcome(message):
 	
 	bot.send_message(message.chat.id, f'Твой уникальный номер - {message.chat.id}')
 	
-	time.wait(1)
+	time.sleep(1)
 
 	with engine.connect() as conn:
 		conn.execute(f'INSERT INTO med.user_questions (user_id, question_id) VALUES ({message.chat.id}, NULL)')
