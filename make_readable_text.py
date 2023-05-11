@@ -5,7 +5,7 @@ df = pd.read_excel('./source_data/exam_source.xlsx')
 with open("exam_materials.txt", "w") as file:
     for index, row in df.iterrows():
         
-        non_empty_items = [i.strip() for i in row[3:] if i==i]
+        non_empty_items = [str(i).strip() for i in row[3:] if i==i]
         
         answer_options = [f'{i}) ' for i in range(1, len(non_empty_items)+1)]
         
