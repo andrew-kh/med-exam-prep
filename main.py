@@ -57,7 +57,7 @@ def echo_all(message):
 	cur.execute(f'SELECT question_id FROM med.user_questions WHERE user_id = {message.chat.id}')
 	current_question_id = int(cur.fetchone()[0])
 
-	cur.execute(f'SELECT answer_id FROM med.questions_raw WHERE question_id = {current_question_id} and is_correct_answer=1')
+	cur.execute(f'SELECT answer_id FROM med.questions_raw WHERE question_id = {current_question_id} AND is_correct_answer=1')
 	correct_answers = cur.fetchall()
 	correct_answers = set([i[0] for i in correct_answers])
 
