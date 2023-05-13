@@ -28,10 +28,11 @@ def send_welcome(message):
 	bot.send_message(message.chat.id, f'Твой уникальный номер - {message.chat.id}')
 	
 	ef.register_user(conn, message.chat.id)
-
+	
 	time.sleep(1)
 
-	rand_q_id = random.randint(0, 1583)
+	rand_q_id = random.randint(0, 199)
+	ef.assign_question(conn, message.chat.id, rand_q_id)
 
 	cur = conn.cursor()
 	cur.execute(f'SELECT DISTINCT question_text FROM med.questions_raw WHERE question_id = {rand_q_id}')
