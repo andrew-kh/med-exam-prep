@@ -65,3 +65,34 @@ def get_expected_answer(conn_object, user_id):
     get_expected_answer_query = f'SELECT shuffled_answer_id FROM {ACTIVE_SESSIONS_TABLE} WHERE user_id = {user_id}'
     expected_answer_int = execute_select_query(conn_object, get_expected_answer_query)[0][0]
     return set(list(str(expected_answer_int)))
+
+def remove_user(conn_object, user_id):
+    remove_user_query = f'DELETE FROM {ACTIVE_SESSIONS_TABLE} WHERE user_id = {user_id}'
+    execute_update_query(conn_object, remove_user_query)
+
+def ask_question(conn_object, user_id, bot_object):
+	register_user(conn_object, user_id)
+
+	rand_q_id = random.randint(0, 199)
+	assign_question(conn_object, user_id, rand_q_id)
+	
+	question_text = get_question_text(conn_object, rand_q_id)
+
+	answers = get_answers(conn_object, rand_q_id)
+	answers_text, correct_ids_int, shuffled_ids_int = shuffle_answers(answers)
+	update_question_answers(
+		conn_object,
+		user_id,
+		rand_q_id,
+		correct_ids_int,
+		shuffled_ids_int
+	)
+
+	is_multiple_answers = correct_ids_int > 9
+
+	if is_multiple_answers:
+		bot_object.send_message(user_id, f'Вопрос (неск. ответов): {question_text}')
+	else:
+		bot_object.send_message(user_id, f'Вопрос: {question_text}')
+
+	bot_object.send_message(user_id, f'Варианты ответа:\n{answers_text}')
