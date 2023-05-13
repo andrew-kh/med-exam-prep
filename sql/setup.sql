@@ -13,7 +13,7 @@ SELECT DISTINCT
 	is_correct_answer
 FROM med.questions_raw
 
-CREATE TABLE active_sessions (
+CREATE TABLE med.active_sessions (
 	user_id INTEGER,
 	session_id SERIAL PRIMARY KEY,
 	question_id INTEGER,
