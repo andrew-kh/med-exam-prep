@@ -33,25 +33,27 @@ def send_welcome(message):
 
 	rand_q_id = random.randint(0, 199)
 	ef.assign_question(conn, message.chat.id, rand_q_id)
+	
+	question_text = ef.get_question_text(conn, rand_q_id)
 
-	cur = conn.cursor()
-	cur.execute(f'SELECT DISTINCT question_text FROM med.questions_raw WHERE question_id = {rand_q_id}')
-	question_text = cur.fetchone()[0]
+	answers = ef.get_answers(conn, rand_q_id)
+	answers_text, correct_ids_int, shuffled_ids_int = ef.shuffle_answers(answers)
+	ef.update_question_answers(
+		conn,
+		message.chat.id,
+		rand_q_id,
+		correct_ids_int,
+		shuffled_ids_int
+	)
 
-	cur.execute(f'SELECT answer_text FROM med.questions_raw WHERE question_id = {rand_q_id}')	
-	answer_text = cur.fetchall()
-	answer_text = [i[0] for i in answer_text]
-	answers_id = list(range(1,len(answer_text)+1))
-	pos_answers = [f'{a_num} - {a_text}' for a_num, a_text in zip(answers_id, answer_text)]
-	pos_answers = '\n'.join(pos_answers)
+	is_multiple_answers = correct_ids_int > 9
 
-	cur = conn.cursor()
-	cur.execute(f'INSERT INTO med.user_questions (user_id, question_id) VALUES ({message.chat.id}, {rand_q_id})')
-	conn.commit()
-	cur.close()
+	if is_multiple_answers:
+		bot.send_message(message.chat.id, f'Вопрос (неск. ответов): {question_text}')
+	else:
+		bot.send_message(message.chat.id, f'Вопрос: {question_text}')
 
-	bot.send_message(message.chat.id, f'Вопрос: {question_text}')
-	bot.send_message(message.chat.id, f'Варианты ответа:\n{pos_answers}')
+	bot.send_message(message.chat.id, f'Варианты ответа:\n{answers_text}')
 
 	
 @bot.message_handler(func=lambda message: True)
