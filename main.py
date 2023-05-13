@@ -59,22 +59,12 @@ def send_welcome(message):
 @bot.message_handler(func=lambda message: True)
 def echo_all(message):
 	
-	cur = conn.cursor()
-	cur.execute(f'SELECT question_id FROM med.user_questions WHERE user_id = {message.chat.id}')
-	current_question_id = int(cur.fetchone()[0])
-
-	cur.execute(f'SELECT answer_id FROM med.questions_raw WHERE question_id = {current_question_id} AND is_correct_answer=1')
-	correct_answers = cur.fetchall()
-	correct_answers = set([i[0] for i in correct_answers])
+	expected_answer = ef.get_expected_answer(conn, message.chat.id)
 
 	user_answer = set([int(i) for i in message.text])
 
-	if user_answer == correct_answers:
+	if user_answer == expected_answer:
 		bot.send_message(message.chat.id, 'Верно 😸')
-		cur = conn.cursor()
-		cur.execute(f'DELETE FROM med.user_questions WHERE user_id = {message.chat.id}')
-		conn.commit()
-		cur.close()
 	else:
 		bot.send_message(message.chat.id, 'Попробуй еще раз 😿')
 
