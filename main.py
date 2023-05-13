@@ -61,7 +61,7 @@ def echo_all(message):
 	
 	expected_answer = ef.get_expected_answer(conn, message.chat.id)
 
-	user_answer = set([int(i) for i in message.text])
+	user_answer = set(list(message.text))
 
 	if user_answer == expected_answer:
 		bot.send_message(message.chat.id, 'Верно 😸')

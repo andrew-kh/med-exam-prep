@@ -64,4 +64,4 @@ def update_question_answers(conn_object, user_id, question_id, correct_answer_id
 def get_expected_answer(conn_object, user_id):
     get_expected_answer_query = f'SELECT shuffled_answer_id FROM {ACTIVE_SESSIONS_TABLE} WHERE user_id = {user_id}'
     expected_answer_int = execute_select_query(conn_object, get_expected_answer_query)[0][0]
-    return set(list(str(expected_answer_int)))
+    return set([list(str(expected_answer_int))])
