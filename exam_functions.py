@@ -100,34 +100,34 @@ def ask_question(conn_object, user_id, bot_object):
     
     question_id = question_id_obj[0][0]
 
-    if question_id != [] & question_id_obj != None:
+    # if question_id != [] & question_id_obj != None:
 
-        assign_question(conn_object, user_id, question_id)
+    assign_question(conn_object, user_id, question_id)
 
-        question_text = get_question_text(conn_object, question_id)
+    question_text = get_question_text(conn_object, question_id)
 
-        answers = get_answers(conn_object, question_id)
-        answers_text, correct_ids_int, shuffled_ids_int = shuffle_answers(answers)
-        update_question_answers(
-            conn_object,
-            user_id,
-            question_id,
-            correct_ids_int,
-            shuffled_ids_int
-        )
+    answers = get_answers(conn_object, question_id)
+    answers_text, correct_ids_int, shuffled_ids_int = shuffle_answers(answers)
+    update_question_answers(
+        conn_object,
+        user_id,
+        question_id,
+        correct_ids_int,
+        shuffled_ids_int
+    )
 
-        is_multiple_answers = correct_ids_int > 9
+    is_multiple_answers = correct_ids_int > 9
 
-        if is_multiple_answers:
-            bot_object.send_message(user_id, f'Вопрос (неск. ответов): {question_text}')
-        else:
-            bot_object.send_message(user_id, f'Вопрос: {question_text}')
-
-        bot_object.send_message(user_id, f'Варианты ответа:\n{answers_text}')
-        
+    if is_multiple_answers:
+        bot_object.send_message(user_id, f'Вопрос (неск. ответов): {question_text}')
     else:
+        bot_object.send_message(user_id, f'Вопрос: {question_text}')
 
-        bot_object.send_message(user_id, f'Поздравляю, все назначенные вопросы решены. Свяжись с администратором для доступа к следующему набору.')
+    bot_object.send_message(user_id, f'Варианты ответа:\n{answers_text}')
+        
+    # else:
+
+    #     bot_object.send_message(user_id, f'Поздравляю, все назначенные вопросы решены. Свяжись с администратором для доступа к следующему набору.')
 
 def validate_answer_message(message_text):
     try:
