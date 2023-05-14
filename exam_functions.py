@@ -97,6 +97,8 @@ def ask_question(conn_object, user_id, bot_object):
             user_id,
             0,
             5)
+    
+    question_id[0][0]
 
     if question_id != None:
 
