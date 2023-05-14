@@ -150,3 +150,4 @@ def select_random_q_from_range(conn_object, user_id, lbound, ubound):
     limit 1
     """
     question_id = execute_select_query(conn_object, random_q_from_range_query)
+    return question_id
