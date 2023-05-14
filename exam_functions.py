@@ -100,7 +100,7 @@ def ask_question(conn_object, user_id, bot_object):
     
     question_id = question_id[0][0]
 
-    if question_id != None:
+    if question_id != []:
 
         assign_question(conn_object, user_id, question_id)
 
