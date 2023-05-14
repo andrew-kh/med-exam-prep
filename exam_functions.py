@@ -96,3 +96,10 @@ def ask_question(conn_object, user_id, bot_object):
 		bot_object.send_message(user_id, f'Вопрос: {question_text}')
 
 	bot_object.send_message(user_id, f'Варианты ответа:\n{answers_text}')
+        
+
+def validate_answer_message(message_text):
+    try:
+        int(message_text)
+    except ValueError:
+        return True
