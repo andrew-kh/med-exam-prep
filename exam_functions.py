@@ -92,15 +92,15 @@ def ask_question(conn_object, user_id, bot_object):
 	
     register_user(conn_object, user_id)
 
-    question_id = select_random_q_from_range(
+    question_id_obj = select_random_q_from_range(
             conn_object,
             user_id,
             0,
-            5)
+            99)
     
-    question_id = question_id[0][0]
+    question_id = question_id_obj[0][0]
 
-    if question_id != []:
+    if question_id != [] & question_id_obj != None:
 
         assign_question(conn_object, user_id, question_id)
 
