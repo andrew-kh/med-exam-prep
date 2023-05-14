@@ -89,35 +89,64 @@ def finish_session(conn_object, user_id):
     execute_update_query(conn_object, finish_session_query)
 
 def ask_question(conn_object, user_id, bot_object):
-	register_user(conn_object, user_id)
+	
+    register_user(conn_object, user_id)
 
-	rand_q_id = random.randint(0, 199)
-	assign_question(conn_object, user_id, rand_q_id)
+    question_id = select_random_q_from_range(
+            conn_object,
+            user_id,
+            0,
+            5)
 
-	question_text = get_question_text(conn_object, rand_q_id)
+    if question_id != None:
 
-	answers = get_answers(conn_object, rand_q_id)
-	answers_text, correct_ids_int, shuffled_ids_int = shuffle_answers(answers)
-	update_question_answers(
-		conn_object,
-		user_id,
-		rand_q_id,
-		correct_ids_int,
-		shuffled_ids_int
-	)
+        assign_question(conn_object, user_id, question_id)
 
-	is_multiple_answers = correct_ids_int > 9
+        question_text = get_question_text(conn_object, question_id)
 
-	if is_multiple_answers:
-		bot_object.send_message(user_id, f'Вопрос (неск. ответов): {question_text}')
-	else:
-		bot_object.send_message(user_id, f'Вопрос: {question_text}')
+        answers = get_answers(conn_object, question_id)
+        answers_text, correct_ids_int, shuffled_ids_int = shuffle_answers(answers)
+        update_question_answers(
+            conn_object,
+            user_id,
+            question_id,
+            correct_ids_int,
+            shuffled_ids_int
+        )
 
-	bot_object.send_message(user_id, f'Варианты ответа:\n{answers_text}')
+        is_multiple_answers = correct_ids_int > 9
+
+        if is_multiple_answers:
+            bot_object.send_message(user_id, f'Вопрос (неск. ответов): {question_text}')
+        else:
+            bot_object.send_message(user_id, f'Вопрос: {question_text}')
+
+        bot_object.send_message(user_id, f'Варианты ответа:\n{answers_text}')
         
+    else:
+
+        bot_object.send_message(user_id, f'Поздравляю, все назначенные вопросы решены. Свяжись с администратором для доступа к следующему набору.')
 
 def validate_answer_message(message_text):
     try:
         int(message_text)
     except ValueError:
         return True
+    
+
+def select_random_q_from_range(conn_object, user_id, lbound, ubound):
+    random_q_from_range_query = f"""
+    select
+        q.question_id
+    from {QUESTIONS_TABLE} q
+    left join {ACTIVE_SESSIONS_TABLE} act
+        on q.question_id = act.question_id
+        and act.user_id = {user_id}
+        and act.is_answered = 1
+    where
+        act.question_id is null
+        and q.question_id between {lbound} and {ubound}
+    order by random()
+    limit 1
+    """
+    question_id = execute_select_query(conn_object, random_q_from_range_query)
