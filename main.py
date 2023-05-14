@@ -42,7 +42,7 @@ def echo_all(message):
 	else:
 		if user_answer == expected_answer:
 			bot.send_message(message.chat.id, 'Верно 😸')
-			ef.remove_user(conn, message.chat.id)
+			ef.finish_session(conn, message.chat.id)
 			ef.ask_question(conn, message.chat.id, bot)
 		else:
 			bot.send_message(message.chat.id, 'Попробуй еще раз 😿')

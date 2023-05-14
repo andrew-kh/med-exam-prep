@@ -20,11 +20,19 @@ def execute_update_query(conn_object, query_text):
         
 
 def register_user(conn_object, user_id):
-    registration_query = f'INSERT INTO {ACTIVE_SESSIONS_TABLE} (user_id) VALUES ({user_id});'
+    registration_query = f'INSERT INTO {ACTIVE_SESSIONS_TABLE} (user_id, creation_ts) VALUES ({user_id}, NOW());'
     execute_update_query(conn_object, registration_query)
 
 
 def assign_question(conn_object, user_id, question_id):
+    assign_question_query = f"""
+    UPDATE {ACTIVE_SESSIONS_TABLE}
+    SET
+        question_id = {question_id}
+    WHERE
+        user_id = {user_id}
+        and is_answered is null
+    """
     assign_question_query = f'UPDATE {ACTIVE_SESSIONS_TABLE} SET question_id = {question_id} WHERE user_id = {user_id}'
     execute_update_query(conn_object, assign_question_query)
 
@@ -57,7 +65,10 @@ def update_question_answers(conn_object, user_id, question_id, correct_answer_id
     update {ACTIVE_SESSIONS_TABLE}
     set correct_answer_id = {correct_answer_id},
         shuffled_answer_id = {shuffled_answer_id}
-    where user_id = {user_id} and question_id = {question_id}
+    where
+        user_id = {user_id}
+        and question_id = {question_id}
+        and is_answered is null
     """
     execute_update_query(conn_object, update_question_answers_query)
 
@@ -66,16 +77,24 @@ def get_expected_answer(conn_object, user_id):
     expected_answer_int = execute_select_query(conn_object, get_expected_answer_query)[0][0]
     return set(list(str(expected_answer_int)))
 
-def remove_user(conn_object, user_id):
-    remove_user_query = f'DELETE FROM {ACTIVE_SESSIONS_TABLE} WHERE user_id = {user_id}'
-    execute_update_query(conn_object, remove_user_query)
+def finish_session(conn_object, user_id):
+    finish_session_query = f"""
+    update {ACTIVE_SESSIONS_TABLE}
+    set
+        closing_ts = NOW(),
+	    is_answered = 1
+    where
+        user_id = {user_id}
+	    and is_answered is null
+    """
+    execute_update_query(conn_object, finish_session_query)
 
 def ask_question(conn_object, user_id, bot_object):
 	register_user(conn_object, user_id)
 
 	rand_q_id = random.randint(0, 199)
 	assign_question(conn_object, user_id, rand_q_id)
-	
+
 	question_text = get_question_text(conn_object, rand_q_id)
 
 	answers = get_answers(conn_object, rand_q_id)
