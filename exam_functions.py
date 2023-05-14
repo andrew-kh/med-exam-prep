@@ -33,7 +33,6 @@ def assign_question(conn_object, user_id, question_id):
         user_id = {user_id}
         and is_answered is null
     """
-    assign_question_query = f'UPDATE {ACTIVE_SESSIONS_TABLE} SET question_id = {question_id} WHERE user_id = {user_id}'
     execute_update_query(conn_object, assign_question_query)
 
 
