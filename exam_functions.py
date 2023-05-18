@@ -95,8 +95,8 @@ def ask_question(conn_object, user_id, bot_object):
     question_id_obj = select_random_q_from_range(
             conn_object,
             user_id,
-            0,
-            99)
+            249,
+            299)
     
     question_id = question_id_obj[0][0]
 
