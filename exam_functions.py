@@ -94,8 +94,7 @@ def ask_question(conn_object, user_id, bot_object):
             conn_object,
             user_id,
             0,
-            3,
-            99)
+            3)
 
     question_id = question_id_obj[0][0]
  
