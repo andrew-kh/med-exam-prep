@@ -90,17 +90,21 @@ def finish_session(conn_object, user_id):
 
 def ask_question(conn_object, user_id, bot_object):
 	
-    register_user(conn_object, user_id)
-
     question_id_obj = select_random_q_from_range(
             conn_object,
             user_id,
             0,
+<<<<<<< HEAD
             3)
+=======
+            99)
+>>>>>>> 8c0bb426ca6037a7ecb7fc99e1c56096601bf147
     
     question_id = question_id_obj[0][0]
-
+ 
     # if question_id != [] & question_id_obj != None:
+
+    register_user(conn_object, user_id)
 
     assign_question(conn_object, user_id, question_id)
 
