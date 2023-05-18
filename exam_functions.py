@@ -98,7 +98,7 @@ def ask_question(conn_object, user_id, bot_object):
 
     question_id = question_id_obj[0][0]
  
-    if question_id != [] & question_id_obj != None:
+    if (question_id != []) & (question_id_obj != None):
 
         register_user(conn_object, user_id)
 
