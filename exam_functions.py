@@ -94,12 +94,9 @@ def ask_question(conn_object, user_id, bot_object):
             conn_object,
             user_id,
             0,
-<<<<<<< HEAD
-            3)
-=======
+            3,
             99)
->>>>>>> 8c0bb426ca6037a7ecb7fc99e1c56096601bf147
-    
+
     question_id = question_id_obj[0][0]
  
     # if question_id != [] & question_id_obj != None:
