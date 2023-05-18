@@ -96,9 +96,12 @@ def ask_question(conn_object, user_id, bot_object):
             0,
             3)
 
-    question_id = question_id_obj[0][0]
+    try:
+        question_id = question_id_obj[0][0]
+    except IndexError:
+        question_id=None
  
-    if (question_id != []) & (question_id_obj != None):
+    if (question_id_obj != []) & (question_id != None):
 
         register_user(conn_object, user_id)
 
