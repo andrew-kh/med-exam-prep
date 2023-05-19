@@ -145,7 +145,7 @@ def ask_question(conn_object, user_id, bot_object):
  
     if (question_id_obj != []) & (question_id != None):
 
-        register_user(conn_object, user_id)
+        # register_user(conn_object, user_id)
 
         assign_question(conn_object, user_id, question_id)
 
