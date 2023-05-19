@@ -48,9 +48,9 @@ def echo_all(message):
 			bot.send_message(message.chat.id, 'Попробуй еще раз 😿')
 
 @bot.message_handler(commands=['ask'])
-def handle_message(message):
+def send_welcome(message):
 
-	bot.send_message(message.chat.id, 'test')
+	bot.send_message(message.chat.id, 'Попробуй еще раз 😿')
 
 	# question_ids = message.split(' ')[1:]
 
