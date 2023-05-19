@@ -27,7 +27,7 @@ def send_welcome(message):
 	
 	bot.send_message(message.chat.id, f'Твой уникальный номер - {message.chat.id}')
 	
-	ef.ask_question(conn, message.chat.id, bot)
+	# ef.ask_question(conn, message.chat.id, bot)
 
 	
 @bot.message_handler(func=lambda message: True)
@@ -46,5 +46,12 @@ def echo_all(message):
 			ef.ask_question(conn, message.chat.id, bot)
 		else:
 			bot.send_message(message.chat.id, 'Попробуй еще раз 😿')
+
+@bot.message_handler(regexp="/ask")
+def handle_message(message):
+
+	question_ids = message.split(' ')[1:]
+
+	bot.send_message(message.chat.id, f'Ваши вопросы добавлены: с {question_ids[0]} по {question_ids[1]}')
 
 bot.infinity_polling()

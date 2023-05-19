@@ -25,7 +25,7 @@ def register_user(conn_object, user_id):
     execute_update_query(conn_object, registration_query)
 
 
-def get_users_session(conn_object, user_id):
+def get_user_session(conn_object, user_id):
     registration_query = f"""
     select session_id
     from {SESSIONS_TABLE}
@@ -35,6 +35,19 @@ def get_users_session(conn_object, user_id):
     """
     current_session=execute_select_query(conn_object, registration_query)
     return(current_session[0][0])
+
+
+def set_session_question_range(conn_object, user_id, session_id, question_start_id, question_end_id):
+    question_range_query = f"""
+    update {SESSIONS_TABLE}
+    set question_id_start = {question_start_id},
+        question_id_end = {question_end_id}
+    where 1=1
+        and user_id={user_id}
+        and session_id={session_id}
+    """
+    execute_update_query(conn_object, question_range_query)
+
 
 def assign_question(conn_object, user_id, question_id):
     assign_question_query = f"""
