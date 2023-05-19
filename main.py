@@ -50,7 +50,7 @@ def echo_all(message):
 @bot.message_handler(regexp="(\/ask)")
 def handle_message(message):
 
-	bot.send_message(message.chat.id, f'Ваши вопросы добавлены: с {question_ids[0]} по {question_ids[1]}')
+	bot.send_message(message.chat.id, message)
 
 	question_ids = message.split(' ')[1:]
 
