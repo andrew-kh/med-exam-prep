@@ -3,6 +3,7 @@ import random
 ACTIVE_SESSIONS_TABLE = 'med.active_sessions'
 QUESTIONS_TABLE = 'med.questions'
 ANSWERS_TABLE = 'med.answers'
+SESSIONS_TABLE = 'med.sessions'
 
 def execute_select_query(conn_object, query_text):
     cur = conn_object.cursor()
@@ -20,8 +21,19 @@ def execute_update_query(conn_object, query_text):
         
 
 def register_user(conn_object, user_id):
-    registration_query = f'INSERT INTO {ACTIVE_SESSIONS_TABLE} (user_id, creation_ts) VALUES ({user_id}, NOW());'
+    registration_query = f'INSERT INTO {SESSIONS_TABLE} (user_id, creation_ts) VALUES ({user_id}, NOW());'
     execute_update_query(conn_object, registration_query)
+
+
+def get_users_session(conn_object, user_id):
+    registration_query = f"""
+    select session_id
+    from {SESSIONS_TABLE}
+    where 1=1
+        and user_id={user_id}
+        and is_complete=0
+    """
+    execute_select_query(conn_object, registration_query)
 
 
 def assign_question(conn_object, user_id, question_id):
