@@ -47,7 +47,7 @@ def echo_all(message):
 		else:
 			bot.send_message(message.chat.id, 'Попробуй еще раз 😿')
 
-@bot.message_handler(regexp="\/ask")
+@bot.message_handler(regexp="(\/ask)")
 def handle_message(message):
 
 	bot.send_message(message.chat.id, f'Ваши вопросы добавлены: с {question_ids[0]} по {question_ids[1]}')
