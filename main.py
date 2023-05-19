@@ -32,12 +32,11 @@ def send_welcome(message):
 @bot.message_handler(commands=['ask'])
 def send_welcome(message):
 
-	bot.send_message(message.chat.id, 'Попробуй еще раз 😿')
+	question_ids = message.text.split(' ')[1:]
 
-	# question_ids = message.text.split(' ')[1:]
-
-	# bot.send_message(message.chat.id, f'Ваши вопросы добавлены: с {question_ids[0]} по {question_ids[1]}')
+	bot.send_message(message.chat.id, f'Ваши вопросы добавлены: с {question_ids[0]} по {question_ids[1]}')
 	
+
 @bot.message_handler(func=lambda message: int(message.text))
 def echo_all(message):
 	
