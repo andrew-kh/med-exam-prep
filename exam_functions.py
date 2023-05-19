@@ -33,8 +33,8 @@ def get_users_session(conn_object, user_id):
         and user_id={user_id}
         and is_complete=0
     """
-    execute_select_query(conn_object, registration_query)
-
+    current_session=execute_select_query(conn_object, registration_query)
+    return(current_session[0][0])
 
 def assign_question(conn_object, user_id, question_id):
     assign_question_query = f"""
