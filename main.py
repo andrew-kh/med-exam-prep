@@ -43,7 +43,7 @@ def send_welcome(message):
 
 	bot.send_message(message.chat.id, f'Ваши вопросы добавлены: с {question_ids[0]} по {question_ids[1]}')
 
-	#TODO: ef.ask_question here
+	ef.ask_question(conn, message.chat.id, bot)
 	
 
 @bot.message_handler(func=lambda message: int(message.text))
