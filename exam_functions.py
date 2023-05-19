@@ -38,7 +38,7 @@ def get_user_session(conn_object, user_id):
 
 
 def set_session_question_range(conn_object, user_id, session_id, question_start_id, question_end_id):
-    question_range_query = f"""
+    question_range_query_set = f"""
     update {SESSIONS_TABLE}
     set question_id_start = {question_start_id},
         question_id_end = {question_end_id}
@@ -46,8 +46,21 @@ def set_session_question_range(conn_object, user_id, session_id, question_start_
         and user_id={user_id}
         and session_id={session_id}
     """
-    execute_update_query(conn_object, question_range_query)
+    execute_update_query(conn_object, question_range_query_set)
 
+
+def get_question_range(conn_object, user_id, session_id):
+    question_range_query_get=f"""
+    select
+    question_id_start,
+    question_id_end
+    from {SESSIONS_TABLE}
+    where 1=1
+        and user_id={user_id}
+        and session_id={session_id}
+    """
+    current_session=execute_select_query(conn_object, question_range_query_get)
+    return(current_session[0])
 
 def assign_question(conn_object, user_id, question_id):
     assign_question_query = f"""
@@ -115,6 +128,10 @@ def finish_session(conn_object, user_id):
 
 def ask_question(conn_object, user_id, bot_object):
 	
+    session_id = get_user_session(conn_object, user_id)
+
+    
+
     question_id_obj = select_random_q_from_range(
             conn_object,
             user_id,
