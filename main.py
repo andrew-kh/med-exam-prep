@@ -30,7 +30,7 @@ def send_welcome(message):
 	# ef.ask_question(conn, message.chat.id, bot)
 
 	
-@bot.message_handler(func=lambda message: True)
+@bot.message_handler(func=lambda message: int(message))
 def echo_all(message):
 	
 	expected_answer = ef.get_expected_answer(conn, message.chat.id)
