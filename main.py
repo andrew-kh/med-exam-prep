@@ -32,9 +32,16 @@ def send_welcome(message):
 @bot.message_handler(commands=['ask'])
 def send_welcome(message):
 
+
+	session_id = ef.get_user_session(conn, message.chat.id)
+
 	question_ids = message.text.split(' ')[1:]
 
+	ef.set_session_question_range(conn, message.chat.id, session_id, question_ids[0], question_ids[1])
+
 	bot.send_message(message.chat.id, f'Ваши вопросы добавлены: с {question_ids[0]} по {question_ids[1]}')
+
+	#TODO: ef.ask_question here
 	
 
 @bot.message_handler(func=lambda message: int(message.text))
