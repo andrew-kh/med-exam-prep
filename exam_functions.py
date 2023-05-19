@@ -130,13 +130,13 @@ def ask_question(conn_object, user_id, bot_object):
 	
     session_id = get_user_session(conn_object, user_id)
 
-    
+    question_id_range=get_question_range(conn_object, user_id, session_id)
 
     question_id_obj = select_random_q_from_range(
             conn_object,
             user_id,
-            0,
-            3)
+            question_id_range[0],
+            question_id_range[1])
 
     try:
         question_id = question_id_obj[0][0]
