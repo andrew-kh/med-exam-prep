@@ -49,6 +49,18 @@ def set_session_question_range(conn_object, user_id, session_id, question_start_
     execute_update_query(conn_object, question_range_query_set)
 
 
+def finish_session(conn_object, user_id, session_id):
+    question_range_query_set = f"""
+    update {SESSIONS_TABLE}
+    set is_complete = 1,
+        closing_ts = now()
+    where 1=1
+        and user_id={user_id}
+        and session_id={session_id}
+    """
+    execute_update_query(conn_object, question_range_query_set)
+
+
 def get_question_range(conn_object, user_id, session_id):
     question_range_query_get=f"""
     select
@@ -171,6 +183,7 @@ def ask_question(conn_object, user_id, bot_object):
     else:
 
         bot_object.send_message(user_id, f'Поздравляю, все назначенные вопросы решены. Свяжись с администратором для доступа к следующему набору.')
+        finish_session(conn_object, user_id, session_id)
 
 def validate_answer_message(message_text):
     try:
