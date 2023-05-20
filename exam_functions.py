@@ -62,14 +62,12 @@ def get_question_range(conn_object, user_id, session_id):
     current_session=execute_select_query(conn_object, question_range_query_get)
     return(current_session[0])
 
-def assign_question(conn_object, user_id, question_id):
+def assign_question(conn_object, user_id, session_id, question_id):
     assign_question_query = f"""
-    UPDATE {ACTIVE_SESSIONS_TABLE}
-    SET
-        question_id = {question_id}
-    WHERE
-        user_id = {user_id}
-        and is_answered is null
+    INSERT INTO {ACTIVE_SESSIONS_TABLE}
+    (user_id, session_id, question_id, creation_ts)
+    VALUES
+    ({user_id}, {session_id}, {question_id}, now())
     """
     execute_update_query(conn_object, assign_question_query)
 
@@ -147,7 +145,7 @@ def ask_question(conn_object, user_id, bot_object):
 
         # register_user(conn_object, user_id)
 
-        assign_question(conn_object, user_id, question_id)
+        assign_question(conn_object, user_id, session_id, question_id)
 
         question_text = get_question_text(conn_object, question_id)
 
