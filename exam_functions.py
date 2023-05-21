@@ -18,7 +18,7 @@ def execute_update_query(conn_object, query_text):
 	cur.execute(query_text)
 	conn_object.commit()
 	cur.close()
-        
+
 
 def register_user(conn_object, user_id):
     registration_query = f'INSERT INTO {SESSIONS_TABLE} (user_id, creation_ts, is_complete) VALUES ({user_id}, NOW(), 0);'
