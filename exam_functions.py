@@ -26,43 +26,43 @@ def register_user(conn_object, user_id):
 
 
 def get_user_session(conn_object, user_id):
-    registration_query = f"""
+    registration_query = f'''
     select session_id
     from {SESSIONS_TABLE}
     where 1=1
         and user_id={user_id}
         and is_complete=0
-    """
+    '''
     current_session=execute_select_query(conn_object, registration_query)
     return(current_session[0][0])
 
 
 def set_session_question_range(conn_object, user_id, session_id, question_start_id, question_end_id):
-    question_range_query_set = f"""
+    question_range_query_set = f'''
     update {SESSIONS_TABLE}
     set question_id_start = {question_start_id},
         question_id_end = {question_end_id}
     where 1=1
         and user_id={user_id}
         and session_id={session_id}
-    """
+    '''
     execute_update_query(conn_object, question_range_query_set)
 
 
 def finish_full_session(conn_object, user_id, session_id):
-    question_range_query_set = f"""
+    question_range_query_set = f'''
     update {SESSIONS_TABLE}
     set is_complete = 1,
         closing_ts = now()
     where 1=1
         and user_id={user_id}
         and session_id={session_id}
-    """
+    '''
     execute_update_query(conn_object, question_range_query_set)
 
 
 def get_question_range(conn_object, user_id, session_id):
-    question_range_query_get=f"""
+    question_range_query_get=f'''
     select
     question_id_start,
     question_id_end
@@ -70,17 +70,17 @@ def get_question_range(conn_object, user_id, session_id):
     where 1=1
         and user_id={user_id}
         and session_id={session_id}
-    """
+    '''
     current_session=execute_select_query(conn_object, question_range_query_get)
     return(current_session[0])
 
 def assign_question(conn_object, user_id, session_id, question_id):
-    assign_question_query = f"""
+    assign_question_query = f'''
     INSERT INTO {ACTIVE_SESSIONS_TABLE}
     (user_id, session_id, question_id, creation_ts)
     VALUES
     ({user_id}, {session_id}, {question_id}, now())
-    """
+    '''
     execute_update_query(conn_object, assign_question_query)
 
 
@@ -108,7 +108,7 @@ def shuffle_answers(answers):
 
 
 def update_question_answers(conn_object, user_id, question_id, correct_answer_id, shuffled_answer_id):
-    update_question_answers_query = f"""
+    update_question_answers_query = f'''
     update {ACTIVE_SESSIONS_TABLE}
     set correct_answer_id = {correct_answer_id},
         shuffled_answer_id = {shuffled_answer_id}
@@ -116,7 +116,7 @@ def update_question_answers(conn_object, user_id, question_id, correct_answer_id
         user_id = {user_id}
         and question_id = {question_id}
         and is_answered is null
-    """
+    '''
     execute_update_query(conn_object, update_question_answers_query)
 
 def get_expected_answer(conn_object, user_id):
@@ -125,7 +125,7 @@ def get_expected_answer(conn_object, user_id):
     return set(list(str(expected_answer_int)))
 
 def finish_session(conn_object, user_id):
-    finish_session_query = f"""
+    finish_session_query = f'''
     update {ACTIVE_SESSIONS_TABLE}
     set
         closing_ts = NOW(),
@@ -133,7 +133,7 @@ def finish_session(conn_object, user_id):
     where
         user_id = {user_id}
 	    and is_answered is null
-    """
+    '''
     execute_update_query(conn_object, finish_session_query)
 
 def ask_question(conn_object, user_id, bot_object):
@@ -194,7 +194,7 @@ def validate_answer_message(message_text):
     
 
 def select_random_q_from_range(conn_object, user_id, session_id, lbound, ubound):
-    random_q_from_range_query = f"""
+    random_q_from_range_query = f'''
     select
         q.question_id
     from {QUESTIONS_TABLE} q
@@ -208,6 +208,6 @@ def select_random_q_from_range(conn_object, user_id, session_id, lbound, ubound)
         and q.question_id between {lbound} and {ubound}
     order by random()
     limit 1
-    """
+    '''
     question_id = execute_select_query(conn_object, random_q_from_range_query)
     return question_id

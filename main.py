@@ -8,25 +8,26 @@ from get_env import get_env_data_as_dict
 env = get_env_data_as_dict('/usr/med_exam_prep/.env')
 
 conn = psycopg2.connect(
-    host="localhost",
-    database=env["PG_DB"],
-    user=env["PG_USER"],
-    password=env["PG_PWD"]
+    host='localhost',
+    database=env['PG_DB'],
+    user=env['PG_USER'],
+    password=env['PG_PWD']
 )
 
-bot = telebot.TeleBot(env["TG_BOT_TOKEN"])
+bot = telebot.TeleBot(env['TG_BOT_TOKEN'])
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
 	
 	bot.reply_to(message,
-	("Привет! Бот для подготовки к гос экзамену.\n"
-	"Ты зарегистрирован в сервисе.\n"
+	('Привет! Бот для подготовки к гос экзамену.\n'
+	'Ты зарегистрирован в сервисе.\n'
 	f'Твой уникальный номер - {message.chat.id}\n'
-	"Теперь нужно выбрать список вопросов, который ты хочешь отработать."))
+	'Теперь нужно выбрать список вопросов, который ты хочешь отработать.'))
 
 	bot.send_message(message.chat.id,
-	'Для этого отправь команду \\ask ')
+	('Чтобы отработать вопросы с 1 по 50, отправь команду\n'
+  	'/ask 1 50'))
 
 	ef.register_user(conn, message.chat.id)
 	
