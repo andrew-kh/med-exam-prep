@@ -20,12 +20,10 @@ bot = telebot.TeleBot(env["TG_BOT_TOKEN"])
 def send_welcome(message):
 	
 	bot.reply_to(message,
-	    """
-		Привет! Это тестовая версия бота.\
-		Ты зарегистрирован в сервисе.\
-		Теперь нужно выбрать список вопросов, который ты хочешь решать.""")
-	
-	bot.send_message(message.chat.id, f'Твой уникальный номер - {message.chat.id}')
+	("Привет! Бот для подготовки к гос экзамену.\n"
+	"Ты зарегистрирован в сервисе.\n"
+	f'Твой уникальный номер - {message.chat.id}\n'
+	"Теперь нужно выбрать список вопросов, который ты хочешь отработать."))
 
 	ef.register_user(conn, message.chat.id)
 	
@@ -41,7 +39,7 @@ def send_welcome(message):
 
 	ef.set_session_question_range(conn, message.chat.id, session_id, question_ids[0], question_ids[1])
 
-	bot.send_message(message.chat.id, f'Ваши вопросы добавлены: с {question_ids[0]} по {question_ids[1]}')
+	bot.send_message(message.chat.id, f'Тебе добавлены вопросы с {question_ids[0]} по {question_ids[1]}')
 
 	ef.ask_question(conn, message.chat.id, bot)
 	
