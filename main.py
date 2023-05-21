@@ -26,7 +26,7 @@ def send_welcome(message):
 	"Теперь нужно выбрать список вопросов, который ты хочешь отработать."))
 
 	bot.send_message(message.chat.id,
-	'Для этого отправь команду \ask ')
+	'Для этого отправь команду \\ask ')
 
 	ef.register_user(conn, message.chat.id)
 	
