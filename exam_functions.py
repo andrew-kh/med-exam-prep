@@ -145,6 +145,7 @@ def ask_question(conn_object, user_id, bot_object):
     question_id_obj = select_random_q_from_range(
             conn_object,
             user_id,
+            session_id,
             question_id_range[0],
             question_id_range[1])
 
@@ -192,7 +193,7 @@ def validate_answer_message(message_text):
         return True
     
 
-def select_random_q_from_range(conn_object, user_id, lbound, ubound):
+def select_random_q_from_range(conn_object, user_id, session_id, lbound, ubound):
     random_q_from_range_query = f"""
     select
         q.question_id
@@ -201,6 +202,7 @@ def select_random_q_from_range(conn_object, user_id, lbound, ubound):
         on q.question_id = act.question_id
         and act.user_id = {user_id}
         and act.is_answered = 1
+        and act.session_id = {session_id}
     where
         act.question_id is null
         and q.question_id between {lbound} and {ubound}
