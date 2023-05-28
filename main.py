@@ -30,7 +30,8 @@ def send_welcome(message):
 	bot.send_message(message.chat.id,
 	(f'В базе  {num_of_questions} вопросов'
 	'Чтобы отработать вопрос с n до m, отправь команду\n'
-  	'/ask n m'))
+  	'/ask n m'
+	'*нумерация начинается с 1*'))
 
 	ef.register_user(conn, message.chat.id)
 	
@@ -44,7 +45,7 @@ def send_welcome(message):
 
 	question_ids = message.text.split(' ')[1:]
 
-	ef.set_session_question_range(conn, message.chat.id, session_id, question_ids[0], question_ids[1])
+	ef.set_session_question_range(conn, message.chat.id, session_id, question_ids[0]-1, question_ids[1]-1)
 
 	bot.send_message(message.chat.id, f'Тебе добавлены вопросы с {question_ids[0]} по {question_ids[1]}')
 
