@@ -30,7 +30,7 @@ def send_welcome(message):
 	bot.send_message(message.chat.id,
 	(f'В базе  {num_of_questions} вопросов'
 	'Чтобы отработать вопрос с n до m, отправь команду\n'
-  	'/ask n m'
+  	'/ask n m\n'
 	'*нумерация начинается с 1*'))
 
 	ef.register_user(conn, message.chat.id)
