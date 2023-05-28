@@ -25,9 +25,12 @@ def send_welcome(message):
 	f'Твой уникальный номер - {message.chat.id}\n'
 	'Теперь нужно выбрать список вопросов, который ты хочешь отработать.'))
 
+	num_of_questions = ef.get_num_of_questions(conn)
+
 	bot.send_message(message.chat.id,
-	('Чтобы отработать вопросы с 1 по 50, отправь команду\n'
-  	'/ask 1 50'))
+	(f'В базе  {num_of_questions} вопросов'
+	'Чтобы отработать вопрос с n до m, отправь команду\n'
+  	'/ask n m'))
 
 	ef.register_user(conn, message.chat.id)
 	

@@ -217,5 +217,5 @@ def get_num_of_questions(conn_object):
     num_q_query = '''
     select count(question_id) from med.questions;
     '''
-    number_of_q = execute_select_query(conn_object, num_q_query)
+    number_of_q = execute_select_query(conn_object, num_q_query)[0][0]
     return(number_of_q)
