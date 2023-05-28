@@ -211,3 +211,11 @@ def select_random_q_from_range(conn_object, user_id, session_id, lbound, ubound)
     '''
     question_id = execute_select_query(conn_object, random_q_from_range_query)
     return question_id
+
+
+def get_num_of_questions(conn_object):
+    num_q_query = '''
+    select count(question_id) from med.questions;
+    '''
+    number_of_q = execute_select_query(conn_object, num_q_query)
+    return(number_of_q)
