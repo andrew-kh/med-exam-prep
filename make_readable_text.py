@@ -1,8 +1,8 @@
 import pandas as pd
 
-df = pd.read_excel('./source_data/exam_source.xlsx')
+df = pd.read_excel('./source_data/exam_source_final.xlsx')
 
-with open("exam_materials.txt", "w") as file:
+with open("exam_materials_final.txt", "w") as file:
     for index, row in df.iterrows():
         
         non_empty_items = [str(i).strip() for i in row[3:] if i==i]

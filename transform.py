@@ -1,6 +1,6 @@
 import pandas as pd
 
-df = pd.read_excel('./source_data/exam_source.xlsx')
+df = pd.read_excel('./source_data/exam_source_final.xlsx')
 
 df = df.dropna(how='all', axis=1, inplace=False)
 
@@ -45,4 +45,4 @@ if len(check_ans)!=2 or sum(check_ans)!=1:
 # from answer text
 df['answer_text'] = df['answer_text'].str.replace('\*', '', regex=True).str.strip()
 
-df.to_csv('./data/exam_questions_w_answers.txt', sep='\t', index=True)
+df.to_csv('./data/exam_questions_w_answers_final.txt', sep='\t', index=True)
