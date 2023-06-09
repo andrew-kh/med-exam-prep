@@ -183,7 +183,14 @@ def ask_question(conn_object, user_id, bot_object):
         
     else:
 
-        bot_object.send_message(user_id, f'Поздравляю, все назначенные вопросы решены. Свяжись с администратором для доступа к следующему набору.')
+        bot_object.send_message(user_id, f'Поздравляю, все назначенные вопросы решены!\n\n')
+        bot_object.send_message(user_id,
+        (f'В базе  2 набора вопросов:\n'
+        '1 - 139: общие вопросы\n'
+        '140 - 1336: эндокринология\n'
+        'Чтобы отработать вопрос с n до m, отправь команду\n'
+        '/ask n m'))
+        
         finish_full_session(conn_object, user_id, session_id)
 
 def validate_answer_message(message_text):
