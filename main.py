@@ -25,21 +25,23 @@ def send_welcome(message):
 	f'Твой уникальный номер - {message.chat.id}\n'
 	'Теперь нужно выбрать список вопросов, который ты хочешь отработать.'))
 
-	num_of_questions = ef.get_num_of_questions(conn)
+	# num_of_questions = ef.get_num_of_questions(conn)
 
 	bot.send_message(message.chat.id,
-	(f'В базе  {num_of_questions} вопросов'
+	(f'В базе  2 набора вопросов:\n'
+	'1 - 139: общие вопросы\n'
+	'139 - 1336: эндокринология'
 	'Чтобы отработать вопрос с n до m, отправь команду\n'
-  	'/ask n m\n'
-	'*нумерация начинается с 1*'))
+  	'/ask n m'))
 
-	ef.register_user(conn, message.chat.id)
+	# ef.register_user(conn, message.chat.id)
 	
 	# ef.ask_question(conn, message.chat.id, bot)
 
 @bot.message_handler(commands=['ask'])
 def send_welcome(message):
 
+	ef.register_user(conn, message.chat.id)
 
 	session_id = ef.get_user_session(conn, message.chat.id)
 
